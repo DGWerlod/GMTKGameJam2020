@@ -10,11 +10,11 @@ public abstract class Actor extends Entity {
     public static final int NPC = 0;
     public static final int HERO = 1;
 
-    private float spd;
-    private float hp;
-    private float power;
-    private Action[] attacks;
-    private boolean isAlive;
+    protected float spd;
+    protected float hp;
+    protected float power;
+    protected Action[] attacks;
+    protected boolean isAlive;
 
     public Actor(float x, float y, float w, float h, float spd, float hp, float power, Action[] attacks) {
         super(x, y, w, h);
