@@ -5,8 +5,11 @@ import entities.actors.Actor;
 public class Slash implements Action {
 
     @Override
-    public void applyTo(Actor target, float power) {
-        target.adjustHP((float) -Math.random() * power);
+    public void applyTo(Actor[] targets, float power) {
+        if (targets.length != 1) {
+            throw new IllegalArgumentException("Slash accepts only one target, but more than one was specified.");
+        }
+        targets[0].adjustHP((float) -Math.random() * power);
     }
 
 }
