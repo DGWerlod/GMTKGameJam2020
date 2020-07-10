@@ -1,6 +1,8 @@
+package graphics;
+
 import processing.core.PApplet;
 
-public class MySketch extends PApplet {
+public class Main extends PApplet {
 
     public void settings(){
         size(500, 500);
@@ -15,8 +17,8 @@ public class MySketch extends PApplet {
     }
 
     public static void main(String[] args){
-        String[] processingArgs = {"MySketch"};
-        MySketch mySketch = new MySketch();
-        PApplet.runSketch(processingArgs, mySketch);
+        String[] processingArgs = {"graphics.MySketch"};
+        Main main = new Main();
+        PApplet.runSketch(processingArgs, main);
     }
 }
