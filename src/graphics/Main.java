@@ -17,7 +17,7 @@ public class Main extends PApplet {
     }
 
     public static void main(String[] args){
-        String[] processingArgs = {"graphics.MySketch"};
+        String[] processingArgs = {"graphics.Main"};
         Main main = new Main();
         PApplet.runSketch(processingArgs, main);
     }

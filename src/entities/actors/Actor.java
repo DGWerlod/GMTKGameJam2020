@@ -1,18 +1,22 @@
 package entities.actors;
 
 import entities.Entity;
-import logic.Attack;
+import logic.actions.Action;
 import processing.core.PApplet;
 
 public abstract class Actor extends Entity {
 
+    public static final int ENEMY = -1;
+    public static final int NPC = 0;
+    public static final int HERO = 1;
+
     private float spd;
     private float hp;
     private float power;
-    private Attack[] attacks;
+    private Action[] attacks;
     private boolean isAlive;
 
-    public Actor(float x, float y, float w, float h, float spd, float hp, float power, Attack[] attacks) {
+    public Actor(float x, float y, float w, float h, float spd, float hp, float power, Action[] attacks) {
         super(x, y, w, h);
         this.spd = spd;
         this.hp = hp;
@@ -22,22 +26,24 @@ public abstract class Actor extends Entity {
     }
 
     public float getSpd() {
-        return this.spd;
+        return spd;
     }
 
     public boolean isAlive() {
-        return this.isAlive;
+        return isAlive;
     }
+
+    abstract public int getAllegiance();
 
     public void attack(Actor target) {
-        int toExecute = (int)(Math.random() * this.attacks.length);
-        this.attacks[toExecute].strikeAt(target, this.power);
+        int toExecute = (int)(Math.random() * attacks.length);
+        attacks[toExecute].applyTo(target, power);
     }
 
-    public void takeDamage(float amount) {
-        this.hp -= amount;
-        if (this.hp <= 0) {
-            this.isAlive = false;
+    public void adjustHP(float amount) {
+        hp += amount;
+        if (hp <= 0) {
+            isAlive = false;
         }
     }
 
