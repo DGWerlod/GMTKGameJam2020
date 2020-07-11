@@ -2,7 +2,7 @@ package entities.actors.enemies;
 
 import entities.actors.Actor;
 import graphics.Animation;
-import logic.actions.Action;
+import entities.actions.Action;
 
 public abstract class Enemy extends Actor {
 

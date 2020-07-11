@@ -2,7 +2,7 @@ package entities.actors.heroes;
 
 import entities.actors.Actor;
 import graphics.Animation;
-import logic.actions.Action;
+import entities.actions.Action;
 
 public class Fighter extends Hero {
 

@@ -2,7 +2,7 @@ package entities.actors;
 
 import entities.Entity;
 import graphics.Animation;
-import logic.actions.Action;
+import entities.actions.Action;
 import processing.core.PApplet;
 
 public abstract class Actor extends Entity implements Comparable<Actor> {
