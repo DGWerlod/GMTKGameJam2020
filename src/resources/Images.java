@@ -9,6 +9,7 @@ public class Images {
 
     public static void loadImages(PApplet display) {
         jamLogo = display.loadImage("img/jamlogo.png");
+        jamLogo.resize(1800, 902);
     }
 
 }

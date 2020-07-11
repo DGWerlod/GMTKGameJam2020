@@ -44,7 +44,7 @@ public abstract class Actor extends Entity implements Comparable<Actor> {
     public void act(Actor[] actors) {
         int indexToExecute = (int)(Math.random() * attacks.length);
         Action toExecute = attacks[indexToExecute];
-        toExecute.applyTo(chooseTargets(toExecute, actors), power);
+        toExecute.sendTo(chooseTargets(toExecute, actors), power);
     }
 
     public void adjustHP(float amount) {

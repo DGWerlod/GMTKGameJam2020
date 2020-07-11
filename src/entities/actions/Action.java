@@ -2,42 +2,78 @@ package entities.actions;
 
 import entities.Entity;
 import entities.actors.Actor;
-import graphics.Animation;
 import processing.core.PApplet;
+import processing.core.PImage;
 
 public abstract class Action extends Entity {
 
-    public static final float CLOSE_ORBIT_RADIUS = 0;
-    public static final float FAR_ORBIT_RADIUS = 0;
+    public static final float ACTIVE_ORBIT_RADIUS = 30;
+    public static final float INACTIVE_ORBIT_RADIUS = 50;
 
     protected float centerX;
     protected float centerY;
     protected float spd;
     protected float currentAngle;
     protected float currentOrbitRadius;
-    protected Animation currentAnimation;
+    protected PImage image;
 
-    public Action(float centerX, float centerY, float w, float h, float spd, float startingAngle) {
+    protected Actor[] currentTargets;
+    protected float currentPower;
+    protected int activeTime;
+    protected int activeTimeRemaining;
+
+
+    public Action(float centerX, float centerY, float w, float h,
+                  PImage image, float spd, float startingAngle, int activeTime) {
         super(0, 0, w, h); // x and y are filled in later
         this.centerX = centerX;
         this.centerY = centerY;
         this.spd = spd;
         this.currentAngle = startingAngle;
-        this.currentOrbitRadius = FAR_ORBIT_RADIUS;
+        this.currentOrbitRadius = INACTIVE_ORBIT_RADIUS;
+        this.image = image;
+        this.activeTime = activeTime;
         this.pos();
+        this.reset();
     }
 
-    abstract public void applyTo(Actor[] targets, float power);
+    private void reset() {
+        currentTargets = null;
+        currentPower = 0;
+        currentOrbitRadius = INACTIVE_ORBIT_RADIUS;
+    }
+
+    public void sendTo(Actor[] targets, float power) {
+        currentTargets = targets;
+        currentPower = power;
+        currentOrbitRadius = ACTIVE_ORBIT_RADIUS;
+        activeTimeRemaining = activeTime;
+        // change animation
+    }
+
+    abstract public void apply();
 
     public void pos() {
-        x = (float) (centerX + this.currentOrbitRadius * Math.cos(currentAngle));
-        y = (float) (centerY + this.currentOrbitRadius * Math.sin(currentAngle));
+        x = (float) (centerX + currentOrbitRadius * Math.cos(currentAngle));
+        y = (float) (centerY + currentOrbitRadius * Math.sin(currentAngle));
+    }
+
+    @Override
+    public void draw(PApplet display) {
+        display.image(image, x, y);
     }
 
     @Override
     public void go(PApplet display) {
         currentAngle += spd;
         currentAngle %= 2 * Math.PI;
+        if (currentOrbitRadius == ACTIVE_ORBIT_RADIUS) {
+            activeTimeRemaining--;
+            if (activeTimeRemaining <= 0) {
+                this.apply();
+                this.reset();
+            }
+        }
         this.pos();
         super.go(display);
     }
