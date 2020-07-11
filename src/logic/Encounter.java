@@ -4,6 +4,7 @@ import entities.actors.Actor;
 import processing.core.PApplet;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Encounter {
 
@@ -17,10 +18,15 @@ public class Encounter {
     public Encounter(ArrayList<Actor> actors) {
         this.currentIndex = 0;
         this.actors = actors;
+        this.prepareTurnOrder();
     }
 
     public int getNumActors() {
         return actors.size();
+    }
+
+    public void prepareTurnOrder() {
+        Collections.sort(actors);
     }
 
     public void nextActor(PApplet display) {
@@ -33,6 +39,7 @@ public class Encounter {
         }
         if (currentIndex >= actors.size()) {
             currentIndex = 0;
+            this.prepareTurnOrder();
         }
     }
 
