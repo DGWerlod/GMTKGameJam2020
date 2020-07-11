@@ -12,7 +12,6 @@ public class Animation {
     boolean loop;
     boolean done;
 
-    // replace int[] source with wherever images actually come from
     public Animation(PImage[] source, int updatesPerFrame, boolean loop) {
         this.source = source;
         this.currentFrame = 0;
