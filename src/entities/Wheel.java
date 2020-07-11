@@ -1,6 +1,7 @@
 package entities;
 
 import entities.wedges.Wedge;
+import processing.core.PApplet;
 
 import java.util.ArrayList;
 
@@ -35,6 +36,11 @@ public class Wheel extends Entity {
 
     public int spin() {
         return wedges.get((int)(Math.random() * wedges.size())).getID();
+    }
+
+    @Override
+    public void draw(PApplet display) {
+
     }
 
 }

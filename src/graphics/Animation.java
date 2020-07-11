@@ -5,12 +5,12 @@ import processing.core.PImage;
 
 public class Animation {
 
-    PImage[] source;
-    int currentFrame;
-    int updatesPerFrame;
-    int untilNextFrame;
-    boolean loop;
-    boolean done;
+    private PImage[] source;
+    private int currentFrame;
+    private int updatesPerFrame;
+    private int untilNextFrame;
+    private boolean loop;
+    private boolean done;
 
     public Animation(PImage[] source, int updatesPerFrame, boolean loop) {
         this.source = source;
@@ -25,8 +25,8 @@ public class Animation {
         return this.done;
     }
 
-    public void draw(PApplet display) {
-
+    public void draw(PApplet display, float x, float y, float w, float h) {
+        display.image(source[currentFrame], x, y, w, h);
     }
 
     public void update() {

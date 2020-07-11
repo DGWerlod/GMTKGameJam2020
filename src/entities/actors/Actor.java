@@ -56,6 +56,12 @@ public abstract class Actor extends Entity implements Comparable<Actor> {
 
     abstract public void pos();
 
+    @Override
+    public void draw(PApplet display) {
+        currentAnimation.draw(display, x, y, w, h);
+    }
+
+    @Override
     public void go(PApplet display) {
         this.pos();
         currentAnimation.update();

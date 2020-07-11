@@ -13,9 +13,7 @@ public abstract class Entity {
         this.h = h;
     }
 
-    public void draw(PApplet display) {
-
-    }
+    abstract public void draw(PApplet display);
 
     public void go(PApplet display) {
         this.draw(display);
