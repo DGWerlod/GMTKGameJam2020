@@ -18,22 +18,28 @@ public abstract class Actor extends Entity implements Comparable<Actor> {
     protected float maxHP;
     protected float power;
     protected Animation currentAnimation;
-    protected Action[] attacks;
+    protected Action[] actions;
+    protected boolean beingAttacked;
     protected Action receivedEffect;
     protected int receivedEffectCD;
     protected boolean isAlive;
 
     public Actor(float x, float y, float w, float h, int spd, float hp,
-                 float power, Animation currentAnimation, Action[] attacks) {
+                 float power, Animation currentAnimation, Action[] actions) {
         super(x, y, w, h);
         this.spd = spd;
         this.hp = hp;
         this.maxHP = hp;
         this.power = power;
         this.currentAnimation = currentAnimation;
-        this.attacks = attacks;
+        this.actions = actions;
+        this.beingAttacked = false;
         this.receivedEffect = null;
         this.isAlive = true;
+    }
+
+    public boolean isBeingAttacked() {
+        return beingAttacked;
     }
 
     public boolean isAlive() {
@@ -42,12 +48,18 @@ public abstract class Actor extends Entity implements Comparable<Actor> {
 
     abstract public int getAllegiance();
 
+    public Action[] getActions() {
+        return actions;
+    }
+
     abstract public Actor[] chooseTargets(Action toExecute, Actor[] actors);
 
-    public void act(Actor[] actors) {
-        int indexToExecute = (int)(Math.random() * attacks.length);
-        Action toExecute = attacks[indexToExecute];
-        toExecute.actOn(chooseTargets(toExecute, actors), power);
+    public void act(Actor[] actors, Action toExecute) {
+        Actor[] targets = chooseTargets(toExecute, actors);
+        for (Actor t : targets) {
+            t.beingAttacked = true;
+        }
+        toExecute.actOn(targets, power);
     }
 
     public void receiveEffect(Action toReceive) {
@@ -96,6 +108,7 @@ public abstract class Actor extends Entity implements Comparable<Actor> {
                 receivedEffect.apply();
                 receivedEffect.reset();
                 receivedEffect = null;
+                beingAttacked = false;
             }
         }
         super.go(display);

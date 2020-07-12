@@ -29,27 +29,13 @@ public class Encounter {
         Collections.sort(actors);
     }
 
-    public void nextActor(PApplet display) {
-        Actor now = actors.get(currentIndex);
-        now.go(display);
-        if (now.isAlive()) {
-            currentIndex++;
-        } else {
-            actors.remove(currentIndex);
-        }
-        if (currentIndex >= actors.size()) {
-            currentIndex = 0;
-            this.prepareTurnOrder();
-        }
-    }
-
     public int getStatus() {
         int numHeroes = 0;
         int numEnemies = 0;
         for (Actor a : actors) {
-            if (a.getAllegiance() == Actor.HERO) {
+            if (a.getAllegiance() == Actor.HERO && a.isAlive()) {
                 numHeroes++;
-            } else if (a.getAllegiance() == Actor.ENEMY) {
+            } else if (a.getAllegiance() == Actor.ENEMY && a.isAlive()) {
                 numEnemies++;
             }
         }
@@ -60,6 +46,41 @@ public class Encounter {
         } else {
             return ONGOING;
         }
+    }
+
+    public void go(PApplet display, boolean clicked) {
+
+        boolean readyForNextAction = true;
+        for (Actor a : actors) {
+            if (a.isBeingAttacked()) {
+                readyForNextAction = false;
+                break;
+            }
+        }
+
+        Actor now = actors.get(currentIndex);
+
+        if (readyForNextAction) {
+            if (now.getAllegiance() == Actor.ENEMY) {
+                // randomize action, then...
+                // now.act((Actor[]) actors.toArray(), actionToUse);
+            } else if (now.getAllegiance() == Actor.HERO && clicked) {
+                // spin wheel, then...
+                // now.act((Actor[]) actors.toArray(), actionToUse);
+            }
+            currentIndex++;
+            if (currentIndex >= actors.size()) {
+                currentIndex = 0;
+                this.prepareTurnOrder();
+            }
+        }
+
+        for (Actor a : actors) {
+            if (a.isAlive()) {
+                a.go(display);
+            }
+        }
+
     }
 
 }
