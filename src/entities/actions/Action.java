@@ -10,8 +10,8 @@ public abstract class Action extends Entity {
     public static final float ACTIVE_ORBIT_RADIUS = 30;
     public static final float INACTIVE_ORBIT_RADIUS = 50;
 
-    protected float centerX;
-    protected float centerY;
+    protected float orbitCenterX;
+    protected float orbitCenterY;
     protected float spd;
     protected float currentAngle;
     protected float currentOrbitRadius;
@@ -23,11 +23,11 @@ public abstract class Action extends Entity {
     protected int activeTimeRemaining;
 
 
-    public Action(float centerX, float centerY, float w, float h,
+    public Action(float orbitCenterX, float orbitCenterY, float w, float h,
                   PImage image, float spd, float startingAngle, int activeTime) {
         super(0, 0, w, h); // x and y are filled in later
-        this.centerX = centerX;
-        this.centerY = centerY;
+        this.orbitCenterX = orbitCenterX;
+        this.orbitCenterY = orbitCenterY;
         this.spd = spd;
         this.currentAngle = startingAngle;
         this.currentOrbitRadius = INACTIVE_ORBIT_RADIUS;
@@ -54,8 +54,8 @@ public abstract class Action extends Entity {
     abstract public void apply();
 
     public void pos() {
-        x = (float) (centerX + currentOrbitRadius * Math.cos(currentAngle));
-        y = (float) (centerY + currentOrbitRadius * Math.sin(currentAngle));
+        x = (float) (orbitCenterX + currentOrbitRadius * Math.cos(currentAngle));
+        y = (float) (orbitCenterY + currentOrbitRadius * Math.sin(currentAngle));
     }
 
     @Override

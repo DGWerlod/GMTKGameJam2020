@@ -10,12 +10,15 @@ public class Main extends PApplet {
     }
 
     public void setup() {
+        imageMode(CENTER);
         Images.loadImages(this);
+        textFont(createFont("fonts/muli.ttf", 32));
     }
 
     public void draw() {
-        image(Images.jamLogo, 0, 0);
+        image(Images.jamLogo, (float) width / 2, (float) height / 2);
         ellipse(mouseX, mouseY, 50, 50);
+        text("Hello", 10, 30);
     }
 
     public void mousePressed() {

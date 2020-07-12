@@ -10,9 +10,9 @@ public class LengthFinder {
     public static final String[] FILENAMES = {
             "src/entities/actions/Action.java",
             "src/entities/actions/Punch.java",
-            "src/entities/actors/enemies/BasicMonster.java",
+            "src/entities/actors/enemies/Saturn.java",
             "src/entities/actors/enemies/Enemy.java",
-            "src/entities/actors/heroes/Fighter.java",
+            "src/entities/actors/heroes/Mage.java",
             "src/entities/actors/heroes/Hero.java",
             "src/entities/actors/npcs/NPC.java",
             "src/entities/wedges/Wedge.java",

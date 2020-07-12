@@ -1,13 +1,13 @@
-package entities.actors.heroes;
+package entities.actors.enemies;
 
 import entities.actors.Actor;
 import graphics.Animation;
 import entities.actions.Action;
 
-public class Fighter extends Hero {
+public class Saturn extends Enemy {
 
-    public Fighter(float x, float y, float w, float h, int spd, float hp,
-                   float power, Animation currentAnimation, Action[] attacks) {
+    public Saturn(float x, float y, float w, float h, int spd, float hp,
+                  float power, Animation currentAnimation, Action[] attacks) {
         super(x, y, w, h, spd, hp, power, currentAnimation, attacks);
     }
 
