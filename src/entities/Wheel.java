@@ -40,7 +40,31 @@ public class Wheel extends Entity {
 
     @Override
     public void draw(PApplet display) {
+        if (wedges.size() > 0) {
+            float[] color;
+            float startAngle = (float)(-Math.PI/2);
+            float angleIncr = (float)(wedges.size()/(2*Math.PI));
+            for (Wedge wedge : wedges) {
+                display.push();
+                display.stroke(0);
+                color = wedge.getColor();
+                display.fill(color[0], color[1], color[2]);
+                display.arc(x-w/2, y-h/2, w, h, startAngle, startAngle+angleIncr);
+                startAngle += angleIncr;
+                display.pop();
+            }
+        } else {
+            display.push();
+            display.noFill();
+            display.stroke(0);
+            display.ellipse(x,y,w,h);
+            display.pop();
+        }
+    }
 
+    public void translate(float x, float y) {
+        this.x = x;
+        this.y = y;
     }
 
 }
