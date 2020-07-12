@@ -6,13 +6,11 @@ import graphics.Animation;
 import entities.actions.Action;
 import resources.Images;
 
-import java.lang.annotation.Target;
-
 public class Saturn extends Enemy {
 
     public Saturn(float x, float y) {
-        super(x, y, 150, 150, 4, 50, 3, new Animation(Images.saturn, 12, false, true),
-                new Action[]{new Punch(x, y, 50, 50, Images.poof[0], 10,(float)(-Math.PI/2),5)});
+        super(x, y, 150, 150, 4, 5, 3, new Animation(Images.saturn, 12, false, true),
+                new Action[]{new Punch(x, y, 50, 50, Images.poof[0], 0.01f, (float)(-Math.PI/2),120)});
     }
 
     @Override

@@ -8,8 +8,8 @@ import processing.core.PImage;
 
 public abstract class Action extends Entity {
 
-    public static final float ACTIVE_ORBIT_RADIUS = 30;
-    public static final float INACTIVE_ORBIT_RADIUS = 50;
+    public static final float ACTIVE_ORBIT_RADIUS = 100;
+    public static final float INACTIVE_ORBIT_RADIUS = 150;
 
     protected float orbitCenterX;
     protected float orbitCenterY;

@@ -11,7 +11,7 @@ public abstract class Actor extends Entity implements Comparable<Actor> {
     public static final int NPC = 0;
     public static final int HERO = 1;
 
-    public static final int PARTICLE_DURATION = 30;
+    public static final int PARTICLE_DURATION = 120;
 
     protected int spd;
     protected float hp;
@@ -99,6 +99,9 @@ public abstract class Actor extends Entity implements Comparable<Actor> {
 
     @Override
     public void go(PApplet display) {
+        for (Action a : actions) {
+            a.go(display);
+        }
         this.pos();
         currentAnimation.update();
         if (receivedEffect != null) {
