@@ -56,9 +56,10 @@ public class Main extends PApplet {
                 break;
             case SELECTION:
                 // Begin in-place setup
-                ArrayList<Actor> actors = new ArrayList<>();
-                actors.add(new Maria((float) width / 2, (float) height / 2));
-                actors.add(new Saturn(random(width), random(height)));
+                Actor[] actors = new Actor[] {
+                        new Maria((float) width / 2, (float) height / 2),
+                        new Saturn(random(width), random(height))
+                };
                 // End in-place setup
                 currentEncounter = new Encounter(actors); // change to selection later
                 currentState = ENCOUNTER;

@@ -1,13 +1,9 @@
 package logic;
 
 import entities.Wheel;
-import entities.actions.Punch;
 import entities.actors.Actor;
 import processing.core.PApplet;
-import resources.Images;
-
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 
 public class Encounter {
 
@@ -16,33 +12,21 @@ public class Encounter {
     public static final int DEFEAT = -1;
 
     private int currentIndex;
-    private ArrayList<Actor> actors;
+    private Actor[] actors;
     private Wheel wheel;
 
-    public Encounter(ArrayList<Actor> actors) {
+    public Encounter(Actor[] actors) {
         this.currentIndex = 0;
         this.actors = actors;
         this.prepareTurnOrder();
-        wheel = new Wheel(0, 0, 50, 50);
-        wheel.addWedge(new Punch(0,0,0,0, Images.poof[0],0,0,0));
-        wheel.addWedge(new Punch(0,0,0,0, Images.poof[0],0,0,0));
-        wheel.addWedge(new Punch(0,0,0,0, Images.poof[0],0,0,0));
-        wheel.addWedge(new Punch(0,0,0,0, Images.poof[0],0,0,0));
-        wheel.addWedge(new Punch(0,0,0,0, Images.poof[0],0,0,0));
-        wheel.addWedge(new Punch(0,0,0,0, Images.poof[0],0,0,0));
-        wheel.addWedge(new Punch(0,0,0,0, Images.poof[0],0,0,0));
-        wheel.addWedge(new Punch(0,0,0,0, Images.poof[0],0,0,0));
-        wheel.addWedge(new Punch(0,0,0,0, Images.poof[0],0,0,0));
-        wheel.addWedge(new Punch(0,0,0,0, Images.poof[0],0,0,0));
-        wheel.addWedge(new Punch(0,0,0,0, Images.poof[0],0,0,0));
     }
 
     public int getNumActors() {
-        return actors.size();
+        return actors.length;
     }
 
     public void prepareTurnOrder() {
-        Collections.sort(actors);
+        Arrays.sort(actors);
     }
 
     public int getStatus() {
@@ -74,29 +58,37 @@ public class Encounter {
             }
         }
 
-        Actor now = actors.get(currentIndex);
+        Actor now = actors[currentIndex];
 
-        if (readyForNextAction) {
+        if (wheel == null && readyForNextAction) {
+            boolean tookAction = false;
             if (now.getAllegiance() == Actor.ENEMY) {
                 // randomize action, then...
                 // now.act((Actor[]) actors.toArray(), actionToUse);
+                tookAction = true;
             } else if (now.getAllegiance() == Actor.HERO && clicked) {
-                wheel.beginSpin();
-                // now.act((Actor[]) actors.toArray(), actionToUse);
+                wheel = new Wheel(display.mouseX, display.mouseY, 200, 200, now);
+                tookAction = true;
             }
-            currentIndex++;
-            if (currentIndex >= actors.size()) {
-                currentIndex = 0;
-                this.prepareTurnOrder();
+            if (tookAction) {
+                currentIndex++;
+                if (currentIndex >= actors.length) {
+                    currentIndex = 0;
+                    this.prepareTurnOrder();
+                }
             }
         }
 
 //        if (Math.abs(mouseX - maria.getX()) > 5 || Math.abs(mouseY - maria.getY()) > 5) {
 //            maria.moveInDir(mouseX - maria.getX(), mouseY - maria.getY());
 //        }
-        if (held) {
+        if (wheel != null) {
             wheel.translate(display.mouseX, display.mouseY);
-            wheel.draw(display);
+            wheel.go(display);
+            if (!wheel.isSpinning()) {
+                wheel.enforceResult(actors);
+                wheel = null;
+            }
         }
 
         for (Actor a : actors) {

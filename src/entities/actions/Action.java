@@ -24,20 +24,20 @@ public abstract class Action extends Entity {
     protected int activeTime;
     protected int activeTimeRemaining;
 
-    private float[] color;
+    protected float[] color;
 
-    public static enum Actionkind {
+    public enum Actionkind {
         NONE,
         PUNCH,
         STAR,
         BOX
     }
 
-    private Actionkind id;
-
+    private final Actionkind id;
 
     public Action(float orbitCenterX, float orbitCenterY, float w, float h, PImage image,
-                  Animation particleEffect, float spd, float startingAngle, int activeTime, float[] color, Actionkind id) {
+                  Animation particleEffect, float spd, float startingAngle, int activeTime,
+                  float[] color, Actionkind id) {
         super(0, 0, w, h); // x and y are filled in later
         this.orbitCenterX = orbitCenterX;
         this.orbitCenterY = orbitCenterY;
@@ -51,6 +51,14 @@ public abstract class Action extends Entity {
         this.id = id;
         this.pos();
         this.reset();
+    }
+
+    public Actionkind getId() {
+        return id;
+    }
+
+    public float[] getColor() {
+        return color;
     }
 
     public Animation getParticleEffect() {
@@ -83,6 +91,10 @@ public abstract class Action extends Entity {
         y = (float) (orbitCenterY + currentOrbitRadius * Math.sin(currentAngle));
     }
 
+    public void setAngle(float angle) {
+        this.currentAngle = angle;
+    }
+
     @Override
     public void draw(PApplet display) {
         display.image(image, x, y);
@@ -101,18 +113,6 @@ public abstract class Action extends Entity {
         }
         this.pos();
         super.go(display);
-    }
-
-    public void setAngle(float angle) {
-        this.currentAngle = angle;
-    }
-
-    public Actionkind getId() {
-        return id;
-    }
-
-    public float[] getColor() {
-        return color;
     }
 
 }

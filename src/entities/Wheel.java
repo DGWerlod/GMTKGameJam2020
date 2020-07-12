@@ -1,55 +1,29 @@
 package entities;
 
 import entities.actions.Action;
+import entities.actors.Actor;
 import processing.core.PApplet;
-
-import java.util.ArrayList;
 
 public class Wheel extends Entity {
 
-    private ArrayList<Action> actions;
+    private final Actor source;
+    private Action[] actions;
     private boolean isSpinning;
-    private float countacc;
-    private float countvel;
-    private float countdisp;
+    private float angleIncrement;
+    private float countAcceleration;
+    private float countVelocity;
+    private float countDisplacement;
     private int choice;
 
-    public Wheel(int x, int y, int w, int h) {
+    public Wheel(int x, int y, int w, int h, Actor source) {
         super(x, y, w, h);
-        this.actions = new ArrayList<>();
-    }
-
-    public Wheel(int x, int y, int w, int h, ArrayList<Action> actions) {
-        super(x, y, w, h);
-        this.actions = actions;
-        isSpinning = false;
-        countacc = 0;
-        countvel = 0;
-        countdisp = 0;
-        choice = 0;
-    }
-
-    public void addWedge(Action toAdd) {
-        actions.add(toAdd);
-    }
-
-    // True if successful, false if not (b/c not present on wheel)
-    public boolean removeWedge(Action.Actionkind actionID) {
-        for (int i = 0; i < actions.size(); i++) {
-            if (actions.get(i).getId() == actionID) {
-                actions.remove(i);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void beginSpin() {
-        isSpinning = true;
-        choice = (int)(Math.random() * actions.size());
-        countdisp = 0;
-        countvel = 0.25f;
-        countacc = -0.005f;
+        this.source = source;
+        this.actions = source.getActions();
+        this.isSpinning = true;
+        this.choice = (int)(Math.random() * actions.length);
+        this.countDisplacement = 0;
+        this.countVelocity = 0.25f;
+        this.countAcceleration = -0.005f;
     }
 
     public boolean isSpinning() {
@@ -60,32 +34,41 @@ public class Wheel extends Entity {
         return Action.Actionkind.values()[choice];
     }
 
+    public void enforceResult(Actor[] actors) {
+        source.act(actors, actions[choice]);
+    }
+
+    public void translate(float x, float y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public void doPhysics() {
+        if (countVelocity > 0.125) {
+            countVelocity += countAcceleration;
+        }
+        countDisplacement += countVelocity;
+        if (countDisplacement > 2 * Math.PI) {
+            countDisplacement -= 2 * Math.PI;
+        }
+        if (countVelocity <= 0.125 && Math.abs(countDisplacement - ((choice + 0.5) * angleIncrement)) < angleIncrement / 8) {
+            isSpinning = false;
+        }
+    }
+
     @Override
     public void draw(PApplet display) {
-        if (actions.size() > 0) {
+        if (actions.length > 0) {
             float[] color;
-            float angleIncr = (float)(2*Math.PI/actions.size());
-            float startAngle = (float)(-Math.PI/2 + countdisp);
-            for (Action atn : actions) {
+            float startAngle = (float)(-Math.PI/2 + countDisplacement);
+            for (Action a : actions) {
                 display.push();
                 display.stroke(0);
-                color = atn.getColor();
+                color = a.getColor();
                 display.fill(color[0], color[1], color[2]);
-                display.arc(x, y, w, h, startAngle, startAngle+angleIncr, display.PIE);
-                startAngle += angleIncr;
+                display.arc(x, y, w, h, startAngle, startAngle + angleIncrement, display.PIE);
+                startAngle += angleIncrement;
                 display.pop();
-            }
-            if (isSpinning) {
-                if (countvel > 0.125) {
-                    countvel += countacc;
-                }
-                countdisp += countvel;
-                if (countdisp > 2 * Math.PI) {
-                    countdisp -= 2 * Math.PI;
-                }
-                if (countvel <= 0.125 && Math.abs(countdisp - ((choice + 0.5) * angleIncr)) < angleIncr / 8) {
-                    isSpinning = false;
-                }
             }
         } else {
             display.push();
@@ -94,7 +77,6 @@ public class Wheel extends Entity {
             display.ellipse(x,y,w,h);
             display.pop();
         }
-
         // draw the arrow of designation
         display.push();
         display.noStroke();
@@ -107,9 +89,14 @@ public class Wheel extends Entity {
         display.pop();
     }
 
-    public void translate(float x, float y) {
-        this.x = x;
-        this.y = y;
+    public void go(PApplet display) {
+        angleIncrement = (float)(2*Math.PI/actions.length);
+        if (actions.length > 0) {
+            if (isSpinning) {
+                this.doPhysics();
+            }
+        }
+        this.draw(display);
     }
 
 }
