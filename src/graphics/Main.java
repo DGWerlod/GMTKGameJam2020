@@ -27,6 +27,8 @@ public class Main extends PApplet {
         maria = new Maria(width/2, height/2);
         saturn = new Saturn(random(width), random(height));
         wheel = new Wheel(0, 0, 50, 50);
+        wheel.addWedge(new BasicWedge());
+        wheel.addWedge(new StarWedge());
     }
 
     public void draw() {

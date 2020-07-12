@@ -1,16 +1,17 @@
 package entities.wedges;
 
+import graphics.Animation;
+
 public abstract class Wedge {
 
-    private float[] color = new float[3];
+    public static enum Wedgekind {
+        BASIC,
+        STAR,
+        BOX
+    };
 
-    public static final int BASIC_WEDGE = 0;
-    //...
+    abstract public Wedgekind getID();
 
-    abstract public int getID();
-
-    public float[] getColor() {
-        return color;
-    }
+    abstract public float[] getColor();
 
 }

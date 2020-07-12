@@ -24,7 +24,7 @@ public class Wheel extends Entity {
     }
 
     // True if successful, false if not (b/c not present on wheel)
-    public boolean removeWedge(int wedgeID) {
+    public boolean removeWedge(Wedge.Wedgekind wedgeID) {
         for (Wedge w : wedges) {
             if (w.getID() == wedgeID) {
                 wedges.remove(w);
@@ -34,7 +34,7 @@ public class Wheel extends Entity {
         return false;
     }
 
-    public int spin() {
+    public Wedge.Wedgekind spin() {
         return wedges.get((int)(Math.random() * wedges.size())).getID();
     }
 
@@ -43,13 +43,13 @@ public class Wheel extends Entity {
         if (wedges.size() > 0) {
             float[] color;
             float startAngle = (float)(-Math.PI/2);
-            float angleIncr = (float)(wedges.size()/(2*Math.PI));
+            float angleIncr = (float)(2*Math.PI/wedges.size());
             for (Wedge wedge : wedges) {
                 display.push();
                 display.stroke(0);
                 color = wedge.getColor();
                 display.fill(color[0], color[1], color[2]);
-                display.arc(x-w/2, y-h/2, w, h, startAngle, startAngle+angleIncr);
+                display.arc(x, y, w, h, startAngle, startAngle+angleIncr, display.PIE);
                 startAngle += angleIncr;
                 display.pop();
             }
