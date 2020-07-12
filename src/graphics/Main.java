@@ -6,7 +6,7 @@ import entities.actors.heroes.*;
 import entities.actors.enemies.*;
 import entities.actors.*;
 import entities.Wheel;
-import entities.wedges.*;
+import entities.actions.*;
 
 import static graphics.GAME_STATE.*;
 
@@ -43,8 +43,17 @@ public class Main extends PApplet {
         maria = new Maria((float) width / 2, (float) height / 2);
         saturn = new Saturn(random(width), random(height));
         wheel = new Wheel(0, 0, 50, 50);
-        wheel.addWedge(new BasicWedge());
-        wheel.addWedge(new StarWedge());
+        wheel.addWedge(new Punch(0,0,0,0,Images.poof[0],0,0,0));
+        wheel.addWedge(new Punch(0,0,0,0,Images.poof[0],0,0,0));
+        wheel.addWedge(new Punch(0,0,0,0,Images.poof[0],0,0,0));
+        wheel.addWedge(new Punch(0,0,0,0,Images.poof[0],0,0,0));
+        wheel.addWedge(new Punch(0,0,0,0,Images.poof[0],0,0,0));
+        wheel.addWedge(new Punch(0,0,0,0,Images.poof[0],0,0,0));
+        wheel.addWedge(new Punch(0,0,0,0,Images.poof[0],0,0,0));
+        wheel.addWedge(new Punch(0,0,0,0,Images.poof[0],0,0,0));
+        wheel.addWedge(new Punch(0,0,0,0,Images.poof[0],0,0,0));
+        wheel.addWedge(new Punch(0,0,0,0,Images.poof[0],0,0,0));
+        wheel.addWedge(new Punch(0,0,0,0,Images.poof[0],0,0,0));
         currentState = AUTHORS;
     }
 
@@ -75,14 +84,12 @@ public class Main extends PApplet {
             case ENCOUNTER:
                 maria.draw(this);
                 maria.go(this);
-                maria.act(new Actor[]{saturn});
                 if (Math.abs(mouseX - maria.getX()) > 5 || Math.abs(mouseY - maria.getY()) > 5) {
                     maria.moveInDir(mouseX - maria.getX(), mouseY - maria.getY());
                 }
 
                 saturn.draw(this);
                 saturn.go(this);
-                saturn.act(new Actor[]{maria});
 
                 if (mouseHeld) {
                     wheel.translate(mouseX, mouseY);
@@ -106,6 +113,7 @@ public class Main extends PApplet {
 
     public void mousePressed() {
         mouseHeld = true;
+        wheel.beginSpin();
     }
 
     public void mouseReleased() {

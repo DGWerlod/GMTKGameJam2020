@@ -10,7 +10,8 @@ public class Punch extends Action {
 
     public Punch(float centerX, float centerY, float w, float h,
                  PImage image, float spd, float startingAngle, int activeTime) {
-        super(centerX, centerY, w, h, image, new Animation(Images.poof, 12, true, true), spd, startingAngle, activeTime);
+        super(centerX, centerY, w, h, image, new Animation(Images.poof, 12, true, true),
+                spd, startingAngle, activeTime, new float[]{233f, 160f, 70f}, Actionkind.PUNCH);
     }
 
     @Override
