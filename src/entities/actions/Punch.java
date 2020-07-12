@@ -1,22 +1,24 @@
 package entities.actions;
 
 import entities.actors.Actor;
+import graphics.Animation;
 import processing.core.PApplet;
 import processing.core.PImage;
+import resources.Images;
 
 public class Punch extends Action {
 
     public Punch(float centerX, float centerY, float w, float h,
                  PImage image, float spd, float startingAngle, int activeTime) {
-        super(centerX, centerY, w, h, image, spd, startingAngle, activeTime);
+        super(centerX, centerY, w, h, image, new Animation(Images.poof, 12, true, true), spd, startingAngle, activeTime);
     }
 
     @Override
-    public void sendTo(Actor[] targets, float power) {
+    public void actOn(Actor[] targets, float power) {
         if (targets.length != 1) {
             throw new IllegalArgumentException(String.format("Punch accepts only one target, but %s were specified.", targets.length));
         }
-        super.sendTo(targets, power);
+        super.actOn(targets, power);
     }
 
     @Override

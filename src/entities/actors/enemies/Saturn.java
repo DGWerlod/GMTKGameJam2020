@@ -12,7 +12,7 @@ public class Saturn extends Enemy {
 
     public Saturn(float x, float y) {
         super(x, y, 150, 150, 4, 50, 3, new Animation(Images.saturn, 12, false, true),
-                new Action[]{new Punch(x, y, 50, 50, Images.poof, 10,(float)(-Math.PI/2),5)});
+                new Action[]{new Punch(x, y, 50, 50, Images.poof[0], 10,(float)(-Math.PI/2),5)});
     }
 
     @Override

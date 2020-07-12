@@ -11,12 +11,16 @@ public abstract class Actor extends Entity implements Comparable<Actor> {
     public static final int NPC = 0;
     public static final int HERO = 1;
 
+    public static final int PARTICLE_DURATION = 30;
+
     protected int spd;
     protected float hp;
-    protected float hpmax;
+    protected float maxHP;
     protected float power;
     protected Animation currentAnimation;
     protected Action[] attacks;
+    protected Action receivedEffect;
+    protected int receivedEffectCD;
     protected boolean isAlive;
 
     public Actor(float x, float y, float w, float h, int spd, float hp,
@@ -24,15 +28,12 @@ public abstract class Actor extends Entity implements Comparable<Actor> {
         super(x, y, w, h);
         this.spd = spd;
         this.hp = hp;
-        this.hpmax = hp;
+        this.maxHP = hp;
         this.power = power;
         this.currentAnimation = currentAnimation;
         this.attacks = attacks;
+        this.receivedEffect = null;
         this.isAlive = true;
-    }
-
-    public float getSpd() {
-        return spd;
     }
 
     public boolean isAlive() {
@@ -46,7 +47,12 @@ public abstract class Actor extends Entity implements Comparable<Actor> {
     public void act(Actor[] actors) {
         int indexToExecute = (int)(Math.random() * attacks.length);
         Action toExecute = attacks[indexToExecute];
-        toExecute.sendTo(chooseTargets(toExecute, actors), power);
+        toExecute.actOn(chooseTargets(toExecute, actors), power);
+    }
+
+    public void receiveEffect(Action toReceive) {
+        receivedEffect = toReceive;
+        receivedEffectCD = PARTICLE_DURATION;
     }
 
     public void adjustHP(float amount) {
@@ -69,16 +75,29 @@ public abstract class Actor extends Entity implements Comparable<Actor> {
         display.beginShape(PApplet.QUAD);
         display.vertex(x-w/2,y+h/2+10);
         display.vertex(x-w/2,y+h/2+15);
-        display.vertex(x-w/2 + (w*hp/hpmax),y+h/2+15);
-        display.vertex(x-w/2 + (w*hp/hpmax),y+h/2+10);
+        display.vertex(x-w/2 + (w*hp/ maxHP),y+h/2+15);
+        display.vertex(x-w/2 + (w*hp/ maxHP),y+h/2+10);
         display.endShape();
         display.pop();
+    }
+
+    public void drawEffect(PApplet display) {
+
     }
 
     @Override
     public void go(PApplet display) {
         this.pos();
         currentAnimation.update();
+        if (receivedEffect != null) {
+            this.drawEffect(display);
+            receivedEffectCD--;
+            if (receivedEffectCD <= 0) {
+                receivedEffect.apply();
+                receivedEffect.reset();
+                receivedEffect = null;
+            }
+        }
         super.go(display);
     }
 

@@ -2,6 +2,7 @@ package entities.actions;
 
 import entities.Entity;
 import entities.actors.Actor;
+import graphics.Animation;
 import processing.core.PApplet;
 import processing.core.PImage;
 
@@ -16,6 +17,7 @@ public abstract class Action extends Entity {
     protected float currentAngle;
     protected float currentOrbitRadius;
     protected PImage image;
+    protected Animation particleEffect;
 
     protected Actor[] currentTargets;
     protected float currentPower;
@@ -23,8 +25,8 @@ public abstract class Action extends Entity {
     protected int activeTimeRemaining;
 
 
-    public Action(float orbitCenterX, float orbitCenterY, float w, float h,
-                  PImage image, float spd, float startingAngle, int activeTime) {
+    public Action(float orbitCenterX, float orbitCenterY, float w, float h, PImage image,
+                  Animation particleEffect, float spd, float startingAngle, int activeTime) {
         super(0, 0, w, h); // x and y are filled in later
         this.orbitCenterX = orbitCenterX;
         this.orbitCenterY = orbitCenterY;
@@ -32,23 +34,33 @@ public abstract class Action extends Entity {
         this.currentAngle = startingAngle;
         this.currentOrbitRadius = INACTIVE_ORBIT_RADIUS;
         this.image = image;
+        this.particleEffect = particleEffect;
         this.activeTime = activeTime;
         this.pos();
         this.reset();
     }
 
-    private void reset() {
-        currentTargets = null;
-        currentPower = 0;
-        currentOrbitRadius = INACTIVE_ORBIT_RADIUS;
+    public Animation getParticleEffect() {
+        return this.particleEffect;
     }
 
-    public void sendTo(Actor[] targets, float power) {
+    public void reset() {
+        currentTargets = null;
+        currentPower = 0;
+    }
+
+    public void actOn(Actor[] targets, float power) {
         currentTargets = targets;
         currentPower = power;
         currentOrbitRadius = ACTIVE_ORBIT_RADIUS;
         activeTimeRemaining = activeTime;
         // change animation
+    }
+
+    public void sendToTarget() {
+        for (Actor a : currentTargets) {
+            a.receiveEffect(this);
+        }
     }
 
     abstract public void apply();
@@ -70,8 +82,8 @@ public abstract class Action extends Entity {
         if (currentOrbitRadius == ACTIVE_ORBIT_RADIUS) {
             activeTimeRemaining--;
             if (activeTimeRemaining <= 0) {
-                this.apply();
-                this.reset();
+                this.sendToTarget();
+                currentOrbitRadius = INACTIVE_ORBIT_RADIUS;
             }
         }
         this.pos();

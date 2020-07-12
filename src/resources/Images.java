@@ -8,7 +8,7 @@ public class Images {
     public static PImage jamLogo;
     public static PImage[] maria = new PImage[10];
     public static PImage[] saturn = new PImage[8];
-    public static PImage poof;
+    public static PImage[] poof = new PImage[1];
     public static PImage background;
 
     public static void loadImages(PApplet display) {
@@ -36,7 +36,7 @@ public class Images {
 
         jamLogo = display.loadImage("img/jamlogo.png");
         jamLogo.resize(1440, 800);
-        poof = display.loadImage("img/attacks/poof.png");
+        poof[0] = display.loadImage("img/attacks/poof.png");
         background = display.loadImage("img/background.png");
         background.resize(1440, 800);
     }
