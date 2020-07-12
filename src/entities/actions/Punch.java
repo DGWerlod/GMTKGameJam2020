@@ -26,7 +26,7 @@ public class Punch extends Action {
 
     @Override
     public void draw(PApplet display) {
-
+        super.draw(display);
     }
 
 }
