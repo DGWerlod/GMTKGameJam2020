@@ -6,7 +6,7 @@ import resources.Images;
 public class Main extends PApplet {
 
     public void settings() {
-        size(1800, 902);
+        size(1440, 800);
     }
 
     public void setup() {
