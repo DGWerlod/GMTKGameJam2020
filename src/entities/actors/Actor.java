@@ -13,6 +13,7 @@ public abstract class Actor extends Entity implements Comparable<Actor> {
 
     protected int spd;
     protected float hp;
+    protected float hpmax;
     protected float power;
     protected Animation currentAnimation;
     protected Action[] attacks;
@@ -23,6 +24,7 @@ public abstract class Actor extends Entity implements Comparable<Actor> {
         super(x, y, w, h);
         this.spd = spd;
         this.hp = hp;
+        this.hpmax = hp;
         this.power = power;
         this.currentAnimation = currentAnimation;
         this.attacks = attacks;
@@ -59,6 +61,18 @@ public abstract class Actor extends Entity implements Comparable<Actor> {
     @Override
     public void draw(PApplet display) {
         currentAnimation.draw(display, x, y, w, h);
+
+        // draw hp bars
+        display.push();
+        display.noStroke();
+        display.fill(50,225,100);
+        display.beginShape(PApplet.QUAD);
+        display.vertex(x-w/2,y+h/2+10);
+        display.vertex(x-w/2,y+h/2+15);
+        display.vertex(x-w/2 + (w*hp/hpmax),y+h/2+15);
+        display.vertex(x-w/2 + (w*hp/hpmax),y+h/2+10);
+        display.endShape();
+        display.pop();
     }
 
     @Override

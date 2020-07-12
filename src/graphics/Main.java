@@ -25,7 +25,8 @@ public class Main extends PApplet {
     }
 
     public void draw() {
-        background(background);
+        image(Images.background, width/2, height/2, width, height);
+
         maria.draw(this);
         maria.go(this);
         maria.act(new Actor[]{saturn});
