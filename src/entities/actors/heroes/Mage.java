@@ -1,13 +1,13 @@
-package entities.actors.enemies;
+package entities.actors.heroes;
 
 import entities.actors.Actor;
 import graphics.Animation;
 import entities.actions.Action;
 
-public class BasicMonster extends Enemy {
+public class Mage extends Hero {
 
-    public BasicMonster(float x, float y, float w, float h, int spd, float hp,
-                        float power, Animation currentAnimation, Action[] attacks) {
+    public Mage(float x, float y, float w, float h, int spd, float hp,
+                float power, Animation currentAnimation, Action[] attacks) {
         super(x, y, w, h, spd, hp, power, currentAnimation, attacks);
     }
 
