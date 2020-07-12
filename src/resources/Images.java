@@ -7,7 +7,7 @@ public class Images {
 
     public static PImage jamLogo;
     public static PImage[] maria = new PImage[10];
-    public static PImage saturn;
+    public static PImage[] saturn = new PImage[12];
     public static PImage poof;
     public static PImage background;
 
@@ -24,9 +24,22 @@ public class Images {
         maria[8] = display.loadImage("img/maria/9.png");
         maria[9] = maria[7];
 
+
+        saturn[0] = display.loadImage("img/saturn/1.png");
+        saturn[1] = display.loadImage("img/saturn/2.png");
+        saturn[2] = display.loadImage("img/saturn/3.png");
+        saturn[3] = display.loadImage("img/saturn/4.png");
+        saturn[4] = saturn[2];
+        saturn[5] = saturn[1];
+        saturn[6] = saturn[0];
+        saturn[7] = display.loadImage("img/saturn/8.png");
+        saturn[8] = display.loadImage("img/saturn/9.png");
+        saturn[9] = display.loadImage("img/saturn/10.png");
+        saturn[10] = saturn[8];
+        saturn[11] = saturn[7];
+
         jamLogo = display.loadImage("img/jamlogo.png");
         jamLogo.resize(1440, 800);
-        saturn = display.loadImage("img/saturn.png");
         poof = display.loadImage("img/poof.png");
         background = display.loadImage("img/jamlogo.png");
         background.resize(1440, 800);

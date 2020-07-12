@@ -14,7 +14,7 @@ public class Punch extends Action {
     @Override
     public void sendTo(Actor[] targets, float power) {
         if (targets.length != 1) {
-            throw new IllegalArgumentException("Punch accepts only one target, but more than one was specified.");
+            throw new IllegalArgumentException(String.format("Punch accepts only one target, but %s were specified.", targets.length));
         }
         super.sendTo(targets, power);
     }

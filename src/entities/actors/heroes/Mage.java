@@ -13,7 +13,14 @@ public class Mage extends Hero {
 
     @Override
     public Actor[] chooseTargets(Action toExecute, Actor[] actors) {
-        return new Actor[0];
+        Actor[] target = new Actor[1];
+        for (Actor a : actors) {
+            if (a.getAllegiance() == Actor.ENEMY) {
+                target[0] = a;
+                break;
+            }
+        }
+        return target;
     }
 
     @Override
