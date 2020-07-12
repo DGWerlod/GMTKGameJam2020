@@ -1,36 +1,34 @@
 package graphics;
 
+import entities.actors.enemies.Saturn;
+import entities.actors.heroes.Maria;
+import logic.Encounter;
 import processing.core.PApplet;
+import processing.core.PFont;
 import resources.Images;
-import entities.actors.heroes.*;
-import entities.actors.enemies.*;
-import entities.actors.*;
-import entities.Wheel;
-import entities.actions.*;
+import entities.actors.Actor;
 
-import static graphics.GAME_STATE.*;
-
-enum GAME_STATE {
-    AUTHORS,
-    JAM_LOGO,
-    SPLASH,
-    SELECTION,
-    ENCOUNTER,
-    VICTORY,
-    DEFEAT,
-    PAUSE
-}
+import java.util.ArrayList;
 
 public class Main extends PApplet {
 
-    private Maria maria;
-    private Enemy saturn;
-    private Wheel wheel;
+    public static final int AUTHORS = 0;
+    public static final int JAM_LOGO = 1;
+    public static final int SPLASH = 2;
+    public static final int SELECTION = 3;
+    public static final int ENCOUNTER = 4;
+    public static final int VICTORY = 5;
+    public static final int DEFEAT = 6;
+    public static final int PAUSE = 7;
 
     private boolean mouseClicked = false;
     private boolean mouseHeld = false;
 
-    private GAME_STATE currentState;
+    private PFont SMALL;
+    private PFont LARGE;
+
+    private int currentState;
+    private Encounter currentEncounter;
 
     public void settings() {
         size(1440, 800);
@@ -39,21 +37,8 @@ public class Main extends PApplet {
     public void setup() {
         imageMode(CENTER);
         Images.loadImages(this);
-        textFont(createFont("fonts/muli.ttf", 32));
-        maria = new Maria((float) width / 2, (float) height / 2);
-        saturn = new Saturn(random(width), random(height));
-        wheel = new Wheel(0, 0, 50, 50);
-        wheel.addWedge(new Punch(0,0,0,0,Images.poof[0],0,0,0));
-        wheel.addWedge(new Punch(0,0,0,0,Images.poof[0],0,0,0));
-        wheel.addWedge(new Punch(0,0,0,0,Images.poof[0],0,0,0));
-        wheel.addWedge(new Punch(0,0,0,0,Images.poof[0],0,0,0));
-        wheel.addWedge(new Punch(0,0,0,0,Images.poof[0],0,0,0));
-        wheel.addWedge(new Punch(0,0,0,0,Images.poof[0],0,0,0));
-        wheel.addWedge(new Punch(0,0,0,0,Images.poof[0],0,0,0));
-        wheel.addWedge(new Punch(0,0,0,0,Images.poof[0],0,0,0));
-        wheel.addWedge(new Punch(0,0,0,0,Images.poof[0],0,0,0));
-        wheel.addWedge(new Punch(0,0,0,0,Images.poof[0],0,0,0));
-        wheel.addWedge(new Punch(0,0,0,0,Images.poof[0],0,0,0));
+        SMALL = createFont("fonts/muli.ttf", 30);
+        LARGE = createFont("fonts/muli.ttf", 70);
         currentState = AUTHORS;
     }
 
@@ -61,40 +46,25 @@ public class Main extends PApplet {
         image(Images.background, (float) width / 2, (float) height / 2, width, height);
         switch (currentState) {
             case AUTHORS:
-                text("Hello", 10, 30);
-                if (mouseClicked) {
-                    currentState = JAM_LOGO;
-                }
+                Screens.drawAuthors(this, LARGE, SMALL);
                 break;
             case JAM_LOGO:
-                image(Images.jamLogo, (float) width / 2, (float) height / 2, width, height);
-                if (mouseClicked) {
-                    currentState = SPLASH;
-                }
+                Screens.drawJamLogo(this, SMALL);
                 break;
             case SPLASH:
-                text("This is the splash screen my dude", 10, 30);
-                if (mouseClicked) {
-                    currentState = SELECTION;
-                }
+                Screens.drawSplash(this, LARGE);
                 break;
             case SELECTION:
+                // Begin in-place setup
+                ArrayList<Actor> actors = new ArrayList<>();
+                actors.add(new Maria((float) width / 2, (float) height / 2));
+                actors.add(new Saturn(random(width), random(height)));
+                // End in-place setup
+                currentEncounter = new Encounter(actors); // change to selection later
                 currentState = ENCOUNTER;
                 break;
             case ENCOUNTER:
-                maria.draw(this);
-                maria.go(this);
-                if (Math.abs(mouseX - maria.getX()) > 5 || Math.abs(mouseY - maria.getY()) > 5) {
-                    maria.moveInDir(mouseX - maria.getX(), mouseY - maria.getY());
-                }
-
-                saturn.draw(this);
-                saturn.go(this);
-
-                if (mouseHeld) {
-                    wheel.translate(mouseX, mouseY);
-                    wheel.draw(this);
-                }
+                currentEncounter.go(this, mouseClicked, mouseHeld);
                 break;
             case VICTORY:
                 break;
@@ -106,22 +76,22 @@ public class Main extends PApplet {
                 throw new IllegalStateException("Unexpected value: " + currentState);
         }
 
+        if (mouseClicked && currentState <= SPLASH) {
+            currentState++;
+        }
+
         // reset mouseClicked
         mouseClicked = false;
 
     }
 
     public void mousePressed() {
+        mouseClicked = true;
         mouseHeld = true;
-        wheel.beginSpin();
     }
 
     public void mouseReleased() {
         mouseHeld = false;
-    }
-
-    public void mouseClicked() {
-        mouseClicked = true;
     }
 
     public static void main(String[] args) {

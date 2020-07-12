@@ -1,7 +1,10 @@
 package logic;
 
+import entities.Wheel;
+import entities.actions.Punch;
 import entities.actors.Actor;
 import processing.core.PApplet;
+import resources.Images;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,13 +15,26 @@ public class Encounter {
     public static final int ONGOING = 0;
     public static final int DEFEAT = -1;
 
-    int currentIndex;
-    ArrayList<Actor> actors;
+    private int currentIndex;
+    private ArrayList<Actor> actors;
+    private Wheel wheel;
 
     public Encounter(ArrayList<Actor> actors) {
         this.currentIndex = 0;
         this.actors = actors;
         this.prepareTurnOrder();
+        wheel = new Wheel(0, 0, 50, 50);
+        wheel.addWedge(new Punch(0,0,0,0, Images.poof[0],0,0,0));
+        wheel.addWedge(new Punch(0,0,0,0, Images.poof[0],0,0,0));
+        wheel.addWedge(new Punch(0,0,0,0, Images.poof[0],0,0,0));
+        wheel.addWedge(new Punch(0,0,0,0, Images.poof[0],0,0,0));
+        wheel.addWedge(new Punch(0,0,0,0, Images.poof[0],0,0,0));
+        wheel.addWedge(new Punch(0,0,0,0, Images.poof[0],0,0,0));
+        wheel.addWedge(new Punch(0,0,0,0, Images.poof[0],0,0,0));
+        wheel.addWedge(new Punch(0,0,0,0, Images.poof[0],0,0,0));
+        wheel.addWedge(new Punch(0,0,0,0, Images.poof[0],0,0,0));
+        wheel.addWedge(new Punch(0,0,0,0, Images.poof[0],0,0,0));
+        wheel.addWedge(new Punch(0,0,0,0, Images.poof[0],0,0,0));
     }
 
     public int getNumActors() {
@@ -48,7 +64,7 @@ public class Encounter {
         }
     }
 
-    public void go(PApplet display, boolean clicked) {
+    public void go(PApplet display, boolean clicked, boolean held) {
 
         boolean readyForNextAction = true;
         for (Actor a : actors) {
@@ -65,7 +81,7 @@ public class Encounter {
                 // randomize action, then...
                 // now.act((Actor[]) actors.toArray(), actionToUse);
             } else if (now.getAllegiance() == Actor.HERO && clicked) {
-                // spin wheel, then...
+                wheel.beginSpin();
                 // now.act((Actor[]) actors.toArray(), actionToUse);
             }
             currentIndex++;
@@ -73,6 +89,14 @@ public class Encounter {
                 currentIndex = 0;
                 this.prepareTurnOrder();
             }
+        }
+
+//        if (Math.abs(mouseX - maria.getX()) > 5 || Math.abs(mouseY - maria.getY()) > 5) {
+//            maria.moveInDir(mouseX - maria.getX(), mouseY - maria.getY());
+//        }
+        if (held) {
+            wheel.translate(display.mouseX, display.mouseY);
+            wheel.draw(display);
         }
 
         for (Actor a : actors) {
